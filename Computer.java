@@ -1,3 +1,4 @@
+import ALU.FullAdder;
 import ALU.HalfAdder;
 import Connectors.ConnectingWire;
 import Transistor.Transistor;
@@ -34,7 +35,7 @@ class Computer {
             gate.connectToInputB(input2[i]);
 
             System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput().getPin()));
+                    + getResult(gate.getOutput().getPinWire()));
         }
     }
 
@@ -49,7 +50,7 @@ class Computer {
             gate.connectToInputB(input2[i]);
 
             System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput().getPin()));
+                    + getResult(gate.getOutput().getPinWire()));
         }
     }
 
@@ -64,7 +65,7 @@ class Computer {
             gate.connectToInputB(input2[i]);
 
             System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput().getPin()));
+                    + getResult(gate.getOutput().getPinWire()));
         }
     }
 
@@ -78,7 +79,7 @@ class Computer {
             gate.connectToInput(input1[i]);
 
             System.out.println(getResult(input1[i]) + "\t"
-                    + getResult(gate.getOutput()));
+                    + getResult(gate.getOutput().getPinWire()));
         }
     }
 
@@ -94,7 +95,25 @@ class Computer {
             adder.connectToInputB(input2[i]);
 
             System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(adder.getOutput().getPin(1)) + "\t" + getResult(adder.getOutput().getPin(2)));
+                    + getResult(adder.getOutput().getPinWire(1)) + "\t" + getResult(adder.getOutput().getPinWire(2)));
+        }
+
+    }
+
+    public static void testFullAdder(ConnectingWire power, ConnectingWire carry[], ConnectingWire input1[], ConnectingWire input2[]) {
+
+        FullAdder adder = new FullAdder();
+
+        adder.connectToPower(power);
+
+        System.out.println("Carry\tInput1\tInput2\tSum\tCarry");
+        for (int i = 0; i < input2.length && i < input1.length; i++) {
+            adder.connectToInputCarry(carry[i]);
+            adder.connectToInputA(input1[i]);
+            adder.connectToInputB(input2[i]);
+
+            System.out.println(getResult(carry[i])+"\t"+ getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
+                    + getResult(adder.getOutput().getPinWire(1)) + "\t" + getResult(adder.getOutput().getPinWire(2)));
         }
 
     }
@@ -103,30 +122,52 @@ class Computer {
         ConnectingWire power = new ConnectingWire();
         power.setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
-        ConnectingWire input1[] = new ConnectingWire[4];
+        ConnectingWire input1[] = new ConnectingWire[8];
         for (int i = 0; i < input1.length; i++) {
             input1[i] = new ConnectingWire();
         }
-        ConnectingWire input2[] = new ConnectingWire[4];
+        ConnectingWire input2[] = new ConnectingWire[8];
         for (int i = 0; i < input1.length; i++) {
             input2[i] = new ConnectingWire();
         }
+        ConnectingWire carry[] = new ConnectingWire[8];
+        for (int i = 0; i < input1.length; i++) {
+            carry[i] = new ConnectingWire();
+        }
+
+        carry[0].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        carry[1].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        carry[2].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        carry[3].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        carry[4].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        carry[5].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        carry[6].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        carry[7].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
         input1[0].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
-        input1[1].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
-        input1[2].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input1[1].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input1[2].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
         input1[3].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input1[4].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input1[5].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input1[6].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input1[7].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
         input2[0].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
-        input2[1].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
-        input2[2].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input2[1].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input2[2].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
         input2[3].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input2[4].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input2[5].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
+        input2[6].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
+        input2[7].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
         // testAND(power, input1, input2);
         // testOR(power, input1, input2);
         // testNOT(power, input1);
         // testXOR(power, input1, input2);
-        testHalfAdder(power, input1, input2);
+        // testHalfAdder(power, input1, input2);
+        testFullAdder(power, carry, input1, input2);
 
         System.out.println("____________________________________________________");
         System.out.println("Total HalfAdder   : " + HalfAdder.half_adder_count);

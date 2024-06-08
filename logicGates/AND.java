@@ -8,8 +8,12 @@ public class AND implements LogicGate{
     // to track total gates in circuit
     public static int gate_count = 0;
 
+
+    // AND gate have two transistors
     Transistor transistor_A;
     Transistor transistor_B;
+
+    // AND gate have two input pin and one output pin
     Pins input_pins;
     Pins output_pin;
 
@@ -21,42 +25,50 @@ public class AND implements LogicGate{
         output_pin = new Pins();
     }
 
+
+    // connect power to transistors
     @Override
     public void connectToPower(ConnectingWire power) {
+        // both transistors connected in series
         transistor_A.connectToPower(power);
     }
 
+    // connect input pins
     @Override
-    public void connectToPins(Pins inputPins) {
+    public void connectToInputPins(Pins inputPins) {
         input_pins = inputPins;
     }
 
-    @Override
+    // connect to input A
     public void connectToInputA(ConnectingWire input1) {
-        input_pins.connectPin(1, input1);
+        input_pins.connectPinWire(1, input1);
     }
 
-    @Override
+    // connect to input B
     public void connectToInputB(ConnectingWire input2) {
-        input_pins.connectPin(2, input2);
+        input_pins.connectPinWire(2, input2);
     }
 
+    // return output pins
     @Override
     public Pins getOutput() {
         connectTransistors();
         return output_pin;
     }
 
+    // main gate logic
     private void connectTransistors() {
-        transistor_A.connectToBase(input_pins.getPin(1));
-        transistor_B.connectToBase(input_pins.getPin(2));
+        // AND gate has two input which connected to each transistor's base terminal.
+        transistor_A.connectToBase(input_pins.getPinWire(1));
+        transistor_B.connectToBase(input_pins.getPinWire(2));
 
         // connect two transistors in series
         transistor_B.connectToPower(transistor_A.getEmitterStatus());
 
-        output_pin.connectPin(transistor_B.getEmitterStatus());
+        output_pin.connectPinWire(transistor_B.getEmitterStatus());
     }
 
+    // return gate count
     @Override
     public int totalGateCount() {
         return gate_count;
