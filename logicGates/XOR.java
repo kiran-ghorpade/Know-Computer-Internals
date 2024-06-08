@@ -6,8 +6,8 @@
 
 package logicGates;
 
-import Connectors.ConnectingWire;
 import Connectors.Pins;
+import Connectors.ConnectingWire;
 
 public class XOR implements LogicGate {
     public static int gate_count = 0;
@@ -66,9 +66,9 @@ public class XOR implements LogicGate {
     }
 
     // return output
-    public Pins getOutput() {
+    public ConnectingWire getOutput() {
         connectTransistors();
-        return output_pin;
+        return output_pin.getPinWire();
     }
 
     private void connectTransistors() {
@@ -78,13 +78,13 @@ public class XOR implements LogicGate {
         not_gate_A.connectToInput(input_pins.getPinWire(2));
         and_gate_B.connectToInputA(input_pins.getPinWire(2));
 
-        and_gate_A.connectToInputB(not_gate_A.getOutput().getPinWire());
-        and_gate_B.connectToInputB(not_gate_B.getOutput().getPinWire());
+        and_gate_A.connectToInputB(not_gate_A.getOutput());
+        and_gate_B.connectToInputB(not_gate_B.getOutput());
 
-        or_gate_A.connectToInputA(and_gate_A.getOutput().getPinWire());
-        or_gate_A.connectToInputB(and_gate_B.getOutput().getPinWire());
+        or_gate_A.connectToInputA(and_gate_A.getOutput());
+        or_gate_A.connectToInputB(and_gate_B.getOutput());
 
-        output_pin.connectPinWire(or_gate_A.getOutput().getPinWire());
+        output_pin.connectPinWire(or_gate_A.getOutput());
     }
 
     public int totalGateCount() {

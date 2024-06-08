@@ -6,8 +6,8 @@
 
 package logicGates;
 
-import Connectors.ConnectingWire;
 import Connectors.Pins;
+import Connectors.ConnectingWire;
 
 public interface LogicGate {
 
@@ -18,7 +18,7 @@ public interface LogicGate {
     void connectToInputPins(Pins inputPins);
 
     // return output pins
-    Pins getOutput();
+    ConnectingWire getOutput();
 
     // just gate counter. NOTE: we don't need it.
     int totalGateCount();

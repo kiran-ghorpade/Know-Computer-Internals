@@ -1,5 +1,5 @@
 /**
- * Connecting Wire :
+ * Connecting ConnectingWire :
  *     - It is a basic component of any elctronic circuit.
  *     - It provides a medium to flow current(flow of electrons) through it.
  * 
@@ -15,7 +15,7 @@
 
 package Connectors;
 
-public class ConnectingWire {
+public class ConnectingWire{
 
     // CURRENT_FLOWING represent 5V
     public static final boolean CURRENT_FLOWING = true;

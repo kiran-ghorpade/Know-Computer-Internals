@@ -55,10 +55,10 @@ public class NOT extends Transistor implements LogicGate {
 
     // return output pin
     @Override
-    public Pins getOutput() {
+    public ConnectingWire getOutput() {
         this.changeEmitterCurrentStatus();
         output_pin.connectPinWire(emitter);
-        return output_pin;
+        return output_pin.getPinWire();
     }
 
     // return gate count

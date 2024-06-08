@@ -1,7 +1,7 @@
 package logicGates;
 
-import Connectors.ConnectingWire;
 import Connectors.Pins;
+import Connectors.ConnectingWire;
 import Transistor.Transistor;
 
 public class OR implements LogicGate{
@@ -49,9 +49,9 @@ public class OR implements LogicGate{
 
     // return output pins
     @Override
-    public Pins getOutput() {
+    public ConnectingWire getOutput() {
         connectTransistors();
-        return output_pin;
+        return output_pin.getPinWire();
     }
 
 

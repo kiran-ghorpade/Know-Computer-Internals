@@ -5,7 +5,7 @@ import Connectors.ConnectingWire;
 import Transistor.Transistor;
 import logicGates.*;
 
-class Computer {
+class TestAdders {
 
     public static void getResult(String optional, ConnectingWire wire) {
         if (wire.getCurrentStatus() == ConnectingWire.CURRENT_FLOWING)
@@ -18,70 +18,11 @@ class Computer {
 
     public static String getResult(ConnectingWire wire) {
         if (wire.getCurrentStatus() == ConnectingWire.CURRENT_FLOWING)
-            return "TRUE";
+            return "1";
 
         else
-            return "FALSE";
+            return "0";
 
-    }
-
-    public static void testGate(ConnectingWire power, ConnectingWire input1[], ConnectingWire input2[]) {
-        AND gate = new AND();
-
-        gate.connectToPower(power);
-
-        System.out.println("Input1\tInput2\tOuput");
-        for (int i = 0; i < input2.length && i < input1.length; i++) {
-            gate.connectToInputA(input1[i]);
-            gate.connectToInputB(input2[i]);
-
-            System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput()));
-        }
-    }
-
-    public static void testOR(ConnectingWire power, ConnectingWire input1[], ConnectingWire input2[]) {
-        OR gate = new OR();
-
-        gate.connectToPower(power);
-
-        System.out.println("Input1\tInput2\tOuput");
-        for (int i = 0; i < input2.length && i < input1.length; i++) {
-            gate.connectToInputA(input1[i]);
-            gate.connectToInputB(input2[i]);
-
-            System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput()));
-        }
-    }
-
-    public static void testXOR(ConnectingWire power, ConnectingWire input1[], ConnectingWire input2[]) {
-        XOR gate = new XOR();
-
-        gate.connectToPower(power);
-
-        System.out.println("Input1\tInput2\tOuput");
-        for (int i = 0; i < input2.length && i < input1.length; i++) {
-            gate.connectToInputA(input1[i]);
-            gate.connectToInputB(input2[i]);
-
-            System.out.println(getResult(input1[i]) + "\t" + getResult(input2[i]) + "\t"
-                    + getResult(gate.getOutput()));
-        }
-    }
-
-    public static void testNOT(ConnectingWire power, ConnectingWire input1[]) {
-        NOT gate = new NOT();
-
-        gate.connectToPower(power);
-
-        System.out.println("Input1\tOuput");
-        for (int i = 0; i < input1.length; i++) {
-            gate.connectToInput(input1[i]);
-
-            System.out.println(getResult(input1[i]) + "\t"
-                    + getResult(gate.getOutput()));
-        }
     }
 
     public static void testHalfAdder(ConnectingWire power, ConnectingWire input1[], ConnectingWire input2[]) {
@@ -91,6 +32,7 @@ class Computer {
         adder.connectToPower(power);
 
         System.out.println("Input1\tInput2\tSum\tCarry");
+        System.out.println("----------------------------------------");
         for (int i = 0; i < input2.length && i < input1.length; i++) {
             adder.connectToInputA(input1[i]);
             adder.connectToInputB(input2[i]);
@@ -104,10 +46,11 @@ class Computer {
     public static void testFullAdder(ConnectingWire power, ConnectingWire carry[], ConnectingWire input1[], ConnectingWire input2[]) {
 
         FullAdder adder = new FullAdder();
-
+        
         adder.connectToPower(power);
-
+        
         System.out.println("Carry\tInput1\tInput2\tSum\tCarry");
+        System.out.println("----------------------------------------");
         for (int i = 0; i < input2.length && i < input1.length; i++) {
             adder.connectToInputCarry(carry[i]);
             adder.connectToInputA(input1[i]);
@@ -120,18 +63,20 @@ class Computer {
     }
 
     public static void main(String args[]) {
+        final int INPUT_SIZE = 8;
+
         ConnectingWire power = new ConnectingWire();
         power.setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
-        ConnectingWire input1[] = new ConnectingWire[8];
+        ConnectingWire input1[] = new ConnectingWire[INPUT_SIZE];
         for (int i = 0; i < input1.length; i++) {
             input1[i] = new ConnectingWire();
         }
-        ConnectingWire input2[] = new ConnectingWire[8];
+        ConnectingWire input2[] = new ConnectingWire[INPUT_SIZE];
         for (int i = 0; i < input1.length; i++) {
             input2[i] = new ConnectingWire();
         }
-        ConnectingWire carry[] = new ConnectingWire[8];
+        ConnectingWire carry[] = new ConnectingWire[INPUT_SIZE];
         for (int i = 0; i < input1.length; i++) {
             carry[i] = new ConnectingWire();
         }
@@ -163,15 +108,16 @@ class Computer {
         input2[6].setCurrentStatus(ConnectingWire.CURRENT_STOPPED);
         input2[7].setCurrentStatus(ConnectingWire.CURRENT_FLOWING);
 
-        // testAND(power, input1, input2);
-        // testOR(power, input1, input2);
-        // testNOT(power, input1);
-        // testXOR(power, input1, input2);
-        // testHalfAdder(power, input1, input2);
+        System.out.println("ALL Adders Test Cases - \n\n");
+        System.out.println("\nHalfAdder :");
+        testHalfAdder(power, input1, input2);
+
+        System.out.println("\nFullAdder :");
         testFullAdder(power, carry, input1, input2);
 
-        System.out.println("____________________________________________________");
-        System.out.println("Total HalfAdder   : " + HalfAdder.half_adder_count);
+        
+        System.out.println("\n\nComponents Used");
+        System.out.println("____________________________________________________\n");
         System.out.println("Total AND Gates   : " + AND.gate_count);
         System.out.println("Total OR Gates    : " + OR.gate_count);
         System.out.println("Total NOT Gates   : " + NOT.gate_count);
